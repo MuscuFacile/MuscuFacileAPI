@@ -1,17 +1,18 @@
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const express = require('express'),
+  path = require('path'),
+  cookieParser = require('cookie-parser'),
+  logger = require('morgan'),
 
-const debug = require('debug')('muscufacileapi:server');
-const http = require('http');
+  debug = require('debug')('muscufacileapi:server'),
+  http = require('http'),
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+  indexRouter = require('./routes/index'),
+  usersRouter = require('./routes/users'),
 
-const google = require('./auth/google/initSession');
-
-const app = express();
+  google = require('./auth/google/initSession'),
+  cookieParser = require('cookie-parser'),
+  cookieSession = require('cookie-session'),
+  app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
