@@ -1,11 +1,13 @@
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('muscufacileapi:server');
 const http = require('http');
 const bodyParser = require('body-parser');
 const google = require('./app/api/auth/google/initSession');
+
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 
 const app = express();
 
@@ -24,6 +26,20 @@ const passport = google.generatePassport();
 
 app.use(passport.initialize());
 
+var expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+app.use(cookieSession({
+  name: 'session',
+  keys: ['123'],
+  cookie: {
+    secure: true,
+    httpOnly: true,
+    domain: 'example.com',
+    path: 'foo/bar',
+    expires: expiryDate
+  }
+}));
+app.use(cookieParser());
+
 // app.get('/', (req, res) => {
 //   res.json({
 //     status: 'session cookie not set'
@@ -31,7 +47,20 @@ app.use(passport.initialize());
 // });
 
 app.get('/', function(req, res, next) {
-  res.send({ "title": 'fdgf' });
+  if (req.session.token) {
+    res.cookie('token', req.session.token);
+    res.json({
+      status: 'session cookie set'
+    });
+  } else {
+    res.cookie('token', '')
+    res.json({
+      status: 'session cookie not set'
+    });
+  }
+//   res.send({ 
+//     "title": 'fdgf'
+//  });
 });
 
 
@@ -43,11 +72,19 @@ app.get('/auth/google', passport.authenticate('google', {
 }));
 
 app.get('/auth/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/'
-  }),
-  (req, res) => { }
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    console.log('token: '+ req.user.token);
+    req.session.token = req.user.token;
+    res.redirect('/');
+  }
 );
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  req.session = null;
+  res.redirect('/');
+});
 
 require('./app/api/user')(app);
 
