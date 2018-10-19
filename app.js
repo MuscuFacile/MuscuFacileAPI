@@ -31,7 +31,7 @@ app.use(passport.initialize());
 // });
 
 app.get('/', function(req, res, next) {
-  res.send({ "title": 'fdgf' });
+  res.send({ "title": 'yop' });
 });
 
 
