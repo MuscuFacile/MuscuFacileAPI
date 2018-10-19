@@ -1,6 +1,6 @@
 'use strict;'
 
-const firebase = require('../../config/database.js');
+const firebase = require('../../database/firebaseConnection');
 
 const db = firebase.getFirebaseAdminDb();
 

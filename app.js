@@ -2,15 +2,10 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
 const debug = require('debug')('muscufacileapi:server');
 const http = require('http');
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-
-const google = require('./auth/google/initSession');
 const bodyParser = require('body-parser');
+const google = require('./app/api/auth/google/initSession');
 
 const app = express();
 
@@ -22,39 +17,48 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 //google auth
 const passport = google.generatePassport();
+
 app.use(passport.initialize());
+
 // app.get('/', (req, res) => {
 //   res.json({
 //     status: 'session cookie not set'
 //   });
 // });
+
+app.get('/', function(req, res, next) {
+  res.send({ "title": 'fdgf' });
+});
+
+
+//fin google auth
+
+//ROUTES
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/userinfo.profile']
 }));
+
 app.get('/auth/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/'
   }),
   (req, res) => { }
 );
-//fin google auth
+
+require('./app/api/user')(app);
 
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
+  res.status(400).send({reason: 'Route not Found'});
 });
 
-/**
- * Create HTTP server.
- */
 
+// Create HTTP server.
+ 
 /**
  * Get port from environment and store in Express.
  */

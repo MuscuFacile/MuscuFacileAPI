@@ -3,7 +3,7 @@
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 exports.generatePassport = () => {
-    const googleCredentials = require('../../credentials/google.json'); 
+    const googleCredentials = require('../../../../credentials/google.json'); 
 
     let passport = require('passport');
 
