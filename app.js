@@ -1,131 +1,78 @@
-const express = require('express'),
-  path = require('path'),
-  cookieParser = require('cookie-parser'),
-  logger = require('morgan'),
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const debug = require('debug')('muscufacileapi:server');
+const http = require('http');
+const bodyParser = require('body-parser');
+const google = require('./app/api/auth/google/initSession');
 
-  debug = require('debug')('muscufacileapi:server'),
-  http = require('http'),
+const app = express();
 
-  indexRouter = require('./routes/index'),
-  usersRouter = require('./routes/users'),
-
-  google = require('./auth/google/initSession'),
-  cookieParser = require('cookie-parser'),
-  cookieSession = require('cookie-session'),
-  app = express();
+// Parsers for POST data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 //google auth
 const passport = google.generatePassport();
+
 app.use(passport.initialize());
+
 // app.get('/', (req, res) => {
 //   res.json({
 //     status: 'session cookie not set'
 //   });
 // });
+
+app.get('/', function(req, res, next) {
+  res.send({ "title": 'fdgf' });
+});
+
+
+//fin google auth
+
+//ROUTES
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/userinfo.profile']
 }));
+
 app.get('/auth/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/'
   }),
   (req, res) => { }
 );
-//fin google auth
+
+require('./app/api/user')(app);
 
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
+  res.status(400).send({reason: 'Route not Found'});
 });
+
+
+// Create HTTP server.
+ 
 /**
  * Get port from environment and store in Express.
  */
-
-var port = normalizePort(process.env.PORT || '8080');
+const port = process.env.PORT || '8080';
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
-
+server.listen(port, () => console.log(`API running on localhost:${port}`));
 
 module.exports = app;
