@@ -1,3 +1,5 @@
+'use strict;'
+
 const firebase = require('../../config/database.js');
 
 const db = firebase.getFirebaseAdminDb();

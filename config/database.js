@@ -1,4 +1,5 @@
 'use strict';
+
 const admin = require('firebase-admin');
 
 exports.getFirebaseAdminDb = () => {
@@ -8,6 +9,6 @@ exports.getFirebaseAdminDb = () => {
         credential: admin.credential.cert(serviceAccount),
         databaseURL: 'https://muscufacile-b6eae.firebaseio.com/'
     });
-
     return firebase.database();
 }
+
