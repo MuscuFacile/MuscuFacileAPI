@@ -1,0 +1,62 @@
+{
+    "users":[{
+        "id":"uuid",
+        "name":"String",
+        "lastName":"String",
+        "dateOfBirth":"date",
+        "gender":"boolean",
+        "characteristic":[
+            {
+                "inputDate":"date",
+                "height":"float",
+                "weight":"float",
+                "maximalStrengths":[
+                    {
+                        "exercise":"id",
+                        "weigth":"float"
+                    }
+                ]
+            }
+        ],
+        "session":[
+            {
+                "date":"datetime",
+                "exercises":[{
+                    "id":"int",
+                    "value":"float or time",
+                    "objectif":"String"
+                }]
+            }
+        ],
+        "diets":[{
+            "id":"int",
+            "dateStart":"dateTime",
+            "dateEnd":"dateTime"
+        }],
+        "groups":[]
+
+    }],
+    "usersgroup":[{
+
+    }
+    ],
+    "exercises":[{
+        "id":"uuid",
+        "name": "String",
+        "type":"enum, body, cardio,weight ",
+        "instruments":"machine, freeweight, none",
+        "img":[],
+        "muscles":[]
+    }],
+    "objectifs":[{
+        "name":"String",
+        "description": "String",
+        "repetitions":"String"
+    }],
+    "muscles":[{
+        "muscle_name":"String"
+    }],
+    "diets":[{
+
+    }]
+}
