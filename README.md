@@ -13,9 +13,12 @@ cd /path/to/project/muscu-facile-api
 docker build -t muscu-facile-api .
 
 # Create docker's container from the image and mount project's folder on the container
-# For Windows, you cannot use $(pwd), you need to replace by the absolute path to your project
-docker create --name muscu-facile-api -v $(pwd)/src:/var/www/graph-commune/src -p 8080:8080 muscu-facile-api
+# For Windows, you cannot use $(pwd), use ${PWD} instead
+docker create --name muscu-facile-api -v $(pwd):/var/www/muscu-facile-api -p 8080:80 muscu-facile-api
 
 # Start the container
 docker start muscu-facile-api
+
+# Get server's logs
+docker logs -f muscu-facile-api
 ```

@@ -8,13 +8,17 @@ WORKDIR /var/www/muscu-facile-api
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
+RUN npm install -g nodemon \
+    && npm install \
+    && npm cache clean --force \
+    && mv ./node_modules ~/.node_modules
 # If you are building your code for production
 # RUN npm install --only=production
 
 # Bundle app source
 COPY . .
 
-EXPOSE 8080
+ENV PORT 80
+EXPOSE 80
 
 CMD [ "npm", "start" ]
