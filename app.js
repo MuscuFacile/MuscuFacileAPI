@@ -50,7 +50,7 @@ app.get('/', function(req, res, next) {
   if (req.session.token) {
     res.cookie('token', req.session.token);
     res.json({
-      status: 'session cookie set'
+      status: req.session
     });
   } else {
     res.cookie('token', '')
