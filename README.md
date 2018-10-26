@@ -22,3 +22,11 @@ docker start muscu-facile-api
 # Get server's logs
 docker logs -f muscu-facile-api
 ```
+### Manually
+
+Requierement
+
+Install nodemon globaly
+```bash
+npm install -g nodemon
+```

@@ -16,7 +16,7 @@ exports.generatePassport = () => {
     passport.use(new GoogleStrategy({
         clientID: googleCredentials.web.client_id,
         clientSecret: googleCredentials.web.client_secret,
-        callbackURL: googleCredentials.web.redirect_uris[0]
+        callbackURL: "http://localhost:8080/auth/google/callback" //todo faire varier sur l'environnement
     },
         (token, refreshToken, profile, done) => {
             return done(null, {

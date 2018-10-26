@@ -3,21 +3,23 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --legacy-watch app.js"
+    "start": "node app.js",
+    "start-dev": "nodemon app.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
     "cookie-parser": "~1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "firebase-admin": "^6.0.0",
     "js-sha256": "^0.9.0",
-    "passport": "^0.4.0",
-    "passport-google-oauth": "^1.0.0",
+    "keygrip": "^1.0.3",
     "lodash": "^4.17.11",
     "mocha": "^5.2.0",
     "morgan": "~1.9.0",
-    "nodemon": "1.18.4"
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^1.0.0"
   }
 }
