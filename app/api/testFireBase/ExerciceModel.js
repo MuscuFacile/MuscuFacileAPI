@@ -14,32 +14,66 @@ let root = db.ref();
 });*/
 
 let userList = {
-    "users2" : [
-        {
-            "id" : 1,
-            "nom" : "Cayet",
-            "prenom" : "Matthieu",
-            "mdp": "07123E1F482356C415F684407A3B8723E10B2CBBC0B8FCD6282C49D37C9C1ABC"
-        },
-        {
-            "id": 2,
-            "nom": "Bezabeh-Meucci",
-            "prenom": "Stefano",
-            "mdp": "07123E1F482356C415F684407A3B8723E10B2CBBC0B8FCD6282C49D37C9C1ABC"
-        },
-        {
-            "id": 3,
-            "nom": "Bezabeh-Meucci",
-            "prenom": "Cyprien",
-            "mdp": "07123E1F482356C415F684407A3B8723E10B2CBBC0B8FCD6282C49D37C9C1ABC"
-        },
-        {
-            "id": 4,
-            "nom": "Perrin",
-            "prenom": "Antoine",
-            "mdp": "07123E1F482356C415F684407A3B8723E10B2CBBC0B8FCD6282C49D37C9C1ABC"
-        }
-    ]
+    "users": [{
+        "id": "uuid",
+        "name": "String",
+        "lastName": "String",
+        "dateOfBirth": "date",
+        "gender": "boolean",
+        "characteristic": [
+            {
+                "inputDate": "date",
+                "height": "float",
+                "weight": "float",
+                "maximalStrengths": [
+                    {
+                        "exercise": "id",
+                        "weigth": "float"
+                    }
+                ]
+            }
+        ],
+        "session": [
+            {
+                "date": "datetime",
+                "exercises": [{
+                    "id": "int",
+                    "value": "float or time",
+                    "objectif": "String"
+                }]
+            }
+        ],
+        "diets": [{
+            "id": "int",
+            "dateStart": "dateTime",
+            "dateEnd": "dateTime"
+        }],
+        "groups": []
+
+    }],
+    "usersgroup": [{
+
+    }
+    ],
+    "exercises": [{
+        "id": "uuid",
+        "name": "String",
+        "type": "enum, body, cardio,weight ",
+        "instruments": "machine, freeweight, none",
+        "img": [],
+        "muscles": []
+    }],
+    "objectifs": [{
+        "name": "String",
+        "description": "String",
+        "repetitions": "String"
+    }],
+    "muscles": [{
+        "muscle_name": "String"
+    }],
+    "diets": [{
+
+    }]
 };
 
 //mise à du contenu de root
