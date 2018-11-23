@@ -10,7 +10,7 @@ services:
     # which has trouble seeing file changes, so add -L to use legacy polling
     # https://github.com/remy/nodemon#application-isnt-restarting
     #command: ../node_modules/.bin/nodemon --debug=0.0.0.0:5858
-    command: npm start-dev
+    command: npm run start-dev
     ports:
       - "3000:80"
     volumes:
