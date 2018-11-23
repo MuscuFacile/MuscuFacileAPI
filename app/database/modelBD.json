@@ -24,6 +24,7 @@
                 "exercises":[{
                     "id":"int",
                     "value":"float or time",
+                    "numberOfRepetion":"",
                     "objectif":"String"
                 }]
             }
@@ -51,7 +52,8 @@
     "objectifs":[{
         "name":"String",
         "description": "String",
-        "repetitions":"String"
+        "repetitions":"String",
+        "percetageChargeMax":"int"
     }],
     "muscles":[{
         "muscle_name":"String"
