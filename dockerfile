@@ -18,7 +18,11 @@ RUN npm install -g nodemon \
 # Bundle app source
 COPY . .
 
-ENV PORT 80
-EXPOSE 80
+ARG NODE_ENV=production
+ENV NODE_ENV ${NODE_ENV}
+
+ARG PORT=3000
+ENV PORT ${PORT}
+EXPOSE ${PORT}
 
 CMD [ "npm", "start" ]
