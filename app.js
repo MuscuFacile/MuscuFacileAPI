@@ -9,6 +9,7 @@ const google = require('./app/api/auth/google/initSession');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 
+
 const app = express();
 
 // Parsers for POST data
@@ -85,6 +86,8 @@ app.get('/logout', (req, res) => {
   req.session = null;
   res.redirect('/');
 });
+
+require('./app/api/routes/userRoute')(app); //gestion des utilisateurs
 
 require('./app/api/user')(app);
 
