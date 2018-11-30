@@ -5,7 +5,7 @@ const debug = require('debug')('muscufacileapi:server');
 const http = require('http');
 const bodyParser = require('body-parser');
 const google = require('./app/api/auth/google/initSession');
-
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cors());
 //google auth
 const passport = google.generatePassport();
 
