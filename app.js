@@ -87,6 +87,7 @@ app.get('/logout', (req, res) => {
 });
 
 require('./app/api/user')(app);
+require('./app/api/service')(app);
 
 
 app.get('*', (req, res) => {
