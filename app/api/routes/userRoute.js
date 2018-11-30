@@ -16,14 +16,21 @@ module.exports = app => {
             password : passSalt.pass,
             salt : passSalt.salt
         }
-        let insert = userModel.insertUser(userData);
-
-        if(!insert){
-            insert = null;
-        }
-        res.json({
-            'result' : insert
+        userModel.insertUser(userData).then(insert => {
+            switch(insert){
+                case true:
+                    res.status(200).send({ success: 'Utilisateur enregistré avec succès' });
+                break;
+                case false:
+                    res.status(401).send({ error: 'Utilisateur déjà existant' });
+                break;
+                default :
+                    res.status(500).send({ error: 'Quelque chose s\'est mal, passé, contactez le webmestre' });
+                break;
+            }
         });
+
+        
     });
 
     app.get('/user/login', (req, res) => {
@@ -31,10 +38,21 @@ module.exports = app => {
         const email = req.query.email;
         const pass = req.query.pass;
 
-        let isValid = verifyLogin(sanitizeEmail(email), pass).then(isValid => {
-            res.json({
-                'isValid': isValid
-            });
+        verifyLogin(sanitizeEmail(email), pass).then(isValid => {
+            switch(isValid){
+                case true:
+                    res.status(200).send({ success : 'Utilisateur identfié avec succès'});
+                break;
+                case false:
+                    res.status(403).send({ error : 'identifiants erronnés' });
+                break;
+                case 'non-inscrit':
+                    res.status(401).send({ error: 'Utilisateur inconnu' });
+                break;
+                default:
+                    res.status(500).send({ error : 'Quelque chose s\'est mal, passé, contactez le webmestre' });
+                break;
+            }
         });
     });
 }
