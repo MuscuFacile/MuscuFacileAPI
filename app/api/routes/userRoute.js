@@ -31,10 +31,10 @@ module.exports = app => {
         });
     });
 
-    app.get('/user/login', (req, res) => { // route de connexion
+    app.post('/user/login', (req, res) => { // route de connexion
 
-        const email = req.query.email;
-        const pass = req.query.pass;
+        const email = req.body.email;
+        const pass = req.body.pass;
 
         verifyLogin(sanitizeEmail(email), pass).then(isValid => {
             switch (isValid) {
