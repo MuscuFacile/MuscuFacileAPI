@@ -54,8 +54,8 @@ module.exports = app => {
         });
     });
 
-    app.post('/user/details', (req, res) => { // route d'insertion des détails de l'utilisateur
-        console.log(req.body);
+    app.post('/user/details/:email', (req, res) => { // route d'insertion des détails de l'utilisateur
+        const email = req.params.email;
 
         /**
          * liste des details :
@@ -70,9 +70,6 @@ module.exports = app => {
             age : req.body.age || 'non-renseigné',
             hobbies : req.body.hobbies || []
         }
-
-
-        const email = 'test@test.test'; //recupérer depuis la session
 
         insertDetails(sanitizeEmail(email), details).then(inserted => {
             switch (inserted) {
