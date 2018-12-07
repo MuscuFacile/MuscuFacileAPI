@@ -23,6 +23,20 @@ exports.insertUser = userData => {
     });
 }
 
+exports.getUser = email => {
+    const user = db.ref(`/users/${email}`);
+
+    return user.once('value').then(snapshot => {
+
+        if (snapshot.val()) { //si l'user existe déjà
+            return snapshot.val();
+
+        } else {
+            return false
+        }
+    });
+}
+
 exports.getPass = email => {
 
     return db.ref(`/users/${email}`).once('value').then((snapshot) => {

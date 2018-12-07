@@ -2,6 +2,7 @@
 
 const userModel = require('../../model/userModel');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 
 module.exports = app => {
@@ -39,7 +40,7 @@ module.exports = app => {
         verifyLogin(sanitizeEmail(email), pass).then(isValid => {
             switch (isValid) {
                 case true:
-                    res.status(200).send({ success: 'Utilisateur identfié avec succès' });
+                    res.status(200).send({ success: 'Utilisateur identfié avec succès', token : jwt.sign({'email': email}, 'muscuAPI')});
                     break;
                 case false:
                     res.status(403).send({ error: 'identifiants erronnés' });
@@ -54,21 +55,30 @@ module.exports = app => {
         });
     });
 
-    app.post('/user/details/:email', (req, res) => { // route d'insertion des détails de l'utilisateur
+    app.patch('/user/details/:email', (req, res) => { // route d'insertion des détails de l'utilisateur
         const email = req.params.email;
+        const reqBody = req.body;
 
-        /**
-         * liste des details :
-         * poids
-         * taille
-         * age
-         * hobbies
-         */
-        const details = {
-            poids : req.body.poids,
-            taille : req.body.taille || 'non-renseigné',
-            age : req.body.age || 'non-renseigné',
-            hobbies : req.body.hobbies || []
+        let details = {};
+        
+        if(reqBody['poids']){
+            details['poids'] = reqBody['poids'];
+        }
+
+        if (reqBody['taille']) {
+            details['taille'] = reqBody['taille'];
+        }
+
+        if (reqBody['age']) {
+            details['age'] = reqBody['age'];
+        }
+
+        if (reqBody['hobbies']) {
+            details['hobbies'] = reqBody['hobbies'];
+        }
+
+        if (reqBody['genre']) {
+            details['genre'] = reqBody['genre'];
         }
 
         insertDetails(sanitizeEmail(email), details).then(inserted => {
@@ -85,12 +95,25 @@ module.exports = app => {
             }
         });
     });
+    
+    app.get('/user/details/:email', (req, res) => {
+
+        userModel.getUser(sanitizeEmail(req.params.email)).then(userDetails => {
+           
+            if(!userDetails){
+                res.status(404).send({error: 'Utilisateur inconnu'});
+            } else {
+                res.status(200).json(userDetails);
+            }
+        });
+    });
 }
 
 function cryptPassword(pass, salt = '') {
 
     if (salt === '') {
-        salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); //random string pour saler le hash
+        //random string pour saler le hash
+        salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 
     return {
