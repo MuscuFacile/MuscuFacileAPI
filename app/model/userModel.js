@@ -4,12 +4,13 @@ const firebase = require('../database/firebaseConnection');
 const db = firebase.getFirebaseAdminDb();
 
 
-exports.insertUser = userData => {
-    const user = db.ref(`/users/${userData.email}`);
+exports.insertUser = (id, userData) => {
+    
+    const user = db.ref(`/users/${id}`);
 
     return user.once('value').then(snapshot => {
 
-        if(snapshot.val()){ //si l'user existe déjà
+        if (snapshot.val()) { //si l'user existe déjà
             return false;
 
         } else {
@@ -19,11 +20,35 @@ exports.insertUser = userData => {
                 return 'error';
             });
         }
-    });   
+    });
+}
+
+exports.getUser = email => {
+    const user = db.ref(`/users/${email}`);
+
+    return user.once('value').then(snapshot => {
+
+        if (snapshot.val()) { //si l'user existe déjà
+            return snapshot.val();
+
+        } else {
+            return false
+        }
+    });
 }
 
 exports.getPass = email => {
-    return db.ref(`/users/${email}`).once('value').then(function (snapshot) {
+
+    return db.ref(`/users/${email}`).once('value').then((snapshot) => {
         return snapshot.val();
+    });
+}
+
+exports.insertDetails = (email, details) => {
+
+    return db.ref(`/users/${email}`).update(details).then(() => { 
+        return true; 
+    }).catch(() => { 
+        return false; 
     });
 }
