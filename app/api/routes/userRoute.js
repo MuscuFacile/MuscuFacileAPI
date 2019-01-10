@@ -61,6 +61,14 @@ module.exports = app => {
 
         let details = {};
         
+        if (reqBody['prenom']) {
+            details['prenom'] = reqBody['prenom'];
+        }
+
+        if (reqBody['nom']) {
+            details['nom'] = reqBody['nom'];
+        }
+
         if(reqBody['poids']){
             details['poids'] = reqBody['poids'];
         }
@@ -107,6 +115,27 @@ module.exports = app => {
             }
         });
     });
+
+    app.get('/user/calculImc/:email', (req, res) => {
+        userModel.getUser(sanitizeEmail(req.params.email)).then(userDetails => {
+
+            let imc,
+                statut;
+
+            if (!userDetails) {
+                res.status(404).send({ error: 'Utilisateur inconnu' });
+            } else {
+                imc = calculImc(userDetails.taille, userDetails.poids[userDetails.poids.length-1]); //calcul de l'imc avec le poids le plus récent
+                    
+                statut = imc ? statutImc(imc): "IMC invalide";
+            
+                res.status(200).json({
+                    "imc" : imc,
+                    "statut" : statut
+                });
+            }
+        });
+    });
 }
 
 function cryptPassword(pass, salt = '') {
@@ -139,4 +168,30 @@ function sanitizeEmail(email) {
 function insertDetails(email, details){
 
     return userModel.insertDetails(email, details).then(inserted => { return inserted; })
+}
+
+function calculImc(taille, poids){
+    return poids / Math.pow((taille / 100), 2);
+}
+
+function statutImc(imc){
+
+    let statut = "IMC invalide";
+
+    if(imc < 16.5){
+        statut = "famine";
+    } else if(imc < 18.5){
+        statut = "maigreur";
+    } else if(imc < 25){
+        statut = "corpulence normale";
+    } else if(imc < 30){
+        statut = "surpoids";
+    } else if(imc < 35){
+        statut = "obésité modérée";
+    } else if(imc < 40){
+        statut = "obésité sévère";
+    } else if(imc > 40){
+        statut = "obésité morbide (ou massive)"
+    }
+    return statut;
 }
