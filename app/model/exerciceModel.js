@@ -15,7 +15,8 @@ exports.insertExercice = async (exercice) => {
         'category':exercice.category,
         'muscles':exercice.muscles,
         'muscles_secondary':exercice.muscles_secondary,
-        'equipment':exercice.equipment,    
+        'equipment':exercice.equipment,  
+        'images': exercice.images,  
     };
     return muscles.update(dataToSave);  
 }
