@@ -4,9 +4,9 @@ const firebase = require('../database/firebaseConnection');
 const db = firebase.getFirebaseAdminDb();
 
 
-exports.insertUser = userData => {
+exports.insertUser = (id, userData) => {
     
-    const user = db.ref(`/users/${userData.email}`);
+    const user = db.ref(`/users/${id}`);
 
     return user.once('value').then(snapshot => {
 

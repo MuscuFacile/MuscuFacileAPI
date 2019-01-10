@@ -13,11 +13,11 @@ module.exports = app => {
         let passSalt = cryptPassword(req.body.pass);
 
         let userData = {
-            email: sanitizeEmail(email),
+            email: email,
             password: passSalt.pass,
             salt: passSalt.salt
         }
-        userModel.insertUser(userData).then(insert => {
+        userModel.insertUser(sanitizeEmail(email), userData).then(insert => {
             switch (insert) {
                 case true:
                     res.status(200).send({ success: 'Utilisateur enregistré avec succès' });
