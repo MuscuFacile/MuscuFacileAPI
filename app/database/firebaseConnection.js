@@ -10,11 +10,12 @@ exports.getFirebaseAdminDb = () => {
     serviceAccount.private_key = process.env.FIREBASE_PRIVATE_KEY;
     serviceAccount.client_email = process.env.FIREBASE_CLIENT_EMAIL;
     serviceAccount.client_id = process.env.FIREBASE_CLIENT_ID;
-    
+
+    console.log(process.env.FIREBASE_PRIVATE_KEY == undefined);
+
     const firebase = admin.initializeApp({ //  inititalisation de l'app firebase admin
         credential: admin.credential.cert(serviceAccount),
         databaseURL: 'https://muscufacile-b6eae.firebaseio.com/'
     });
     return firebase.database();
 }
-
