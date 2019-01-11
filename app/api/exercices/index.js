@@ -2,7 +2,7 @@ const categoriesController = require('./categoriesController');
 const equipmentsController = require('./equipmentController');
 const musclesController = require('./musclesController');
 const exerciceController = require('./exerciceController')
-
+const checkNumber= require('../../service/checkNumber');
 module.exports = app => {
     app.get('/categories', async (req, res) => {
         let data = await categoriesController.getCategories();
@@ -24,10 +24,11 @@ module.exports = app => {
     })
 
     app.get('/exercices', async (req, res) => {
-        console.log(req.query);
         let query = { category: [], equipment: [], muscle: [] }
+        let typeCheck=[];
 
         if (req.query.category !== undefined) {
+            typeCheck.push(checkNumber(req.query.category));
             if (Array.isArray(req.query.category)) {
                 req.query.category.map(el =>  query.category.push(parseInt(el)))
                 query.category = query.category.concat(req.query.category);
@@ -37,6 +38,7 @@ module.exports = app => {
         }
 
         if (req.query.equipment !== undefined) {
+            typeCheck.push(checkNumber(req.query.equipment));
             if (Array.isArray(req.query.equipment)) {
                 req.query.equipment.map(el =>  query.equipment.push(parseInt(el)))
             } else {
@@ -45,6 +47,7 @@ module.exports = app => {
         }
 
         if (req.query.muscle !== undefined) {
+            typeCheck.push(checkNumber(req.query.muscle));
             if (Array.isArray(req.query.muscle)) {
                 req.query.muscle.map(el =>  query.muscle.push(parseInt(el)))
             } else {
@@ -52,9 +55,13 @@ module.exports = app => {
             }
         }
 
-        let data= await exerciceController.getExercices(query);
-        
-        res.status(data.status).send(data.data)
+        if(typeCheck.includes(false)){
+            res.status(400).send({reason:"Wrong parameter type"})
+        }else{
+            let data= await exerciceController.getExercices(query);
+            res.status(data.status).send(data.data);
+        }
+       
     })
 
 
