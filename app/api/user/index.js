@@ -111,6 +111,7 @@ module.exports = app => {
             if (!userDetails) {
                 res.status(404).send({ error: 'Utilisateur inconnu' });
             } else {
+                userDetails.poids = Object.values(userDetails.poids);
                 res.status(200).json(userDetails);
             }
         });
