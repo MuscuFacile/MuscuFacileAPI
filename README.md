@@ -2,6 +2,8 @@
 
 ## Contributing
 
+You will need to rename file .env.template to .env and fill it with your firebase's informations.
+
 ### Using docker
 If you are using a Windows OS, you need to install Docker for Windows and use Powershell
 
@@ -14,10 +16,7 @@ docker build -t muscu-facile-api .
 
 # Create docker's container from the image and mount project's folder on the container
 # For Windows, you cannot use $(pwd), use ${PWD} instead
-docker create --name muscu-facile-api
-    -v $(pwd):/var/www/muscu-facile-api
-    -p 8080:80
-    muscu-facile-api
+docker create --name muscu-facile-api -v $(pwd):/var/www/muscu-facile-api -p 3000:3000 muscu-facile-api
 
 # Start the container
 docker start muscu-facile-api

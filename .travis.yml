@@ -12,4 +12,4 @@ before_install:
   - docker run --name muscu-facile-api -v $(pwd):/var/www/muscu-facile-api -p 8080:80 muscu-facile-api
   - docker ps -a
 
-script: docker exec npm test
+script: docker exec muscu-facile-api npm test
