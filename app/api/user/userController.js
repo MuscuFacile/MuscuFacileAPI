@@ -19,7 +19,7 @@ exports.cryptPassword = (pass, salt = '') => {
 exports.verifyLogin = (email, pass) => {
     return userModel.getPass(email).then((userData) => {
         if (userData) {
-            return cryptPassword(pass, userData.salt).pass === userData.password;
+            return this.cryptPassword(pass, userData.salt).pass === userData.password;
         } else {
             return 'non-inscrit';
         }
