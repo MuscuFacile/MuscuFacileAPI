@@ -23,6 +23,17 @@ exports.insertUser = userData => {
     });
 }
 
+exports.updatePassword = (email, newPassword) => {
+    let body = {
+        "password": newPassword
+    }
+    return db.ref(`/users/${email}`).update(body).then(() => { 
+        return true; 
+    }).catch(() => { 
+        return false; 
+    });
+}
+
 exports.getPass = email => {
 
     return db.ref(`/users/${email}`).once('value').then((snapshot) => {

@@ -73,6 +73,11 @@ let userList = {
     }],
     "diets": [{
 
+    }],
+    "resetPassword": [{
+        "email": "String",
+        "code": "String",
+        "expiration": "DateTime"
     }]
 };
 
