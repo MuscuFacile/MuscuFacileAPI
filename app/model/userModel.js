@@ -68,7 +68,7 @@ exports.addPoids = (email, poids, date) => {
 
 exports.getPoids = (email, poids) => {
     return db.ref(`/users/${email}/poids`).once('value').then((snapshot) => {
-        return snapshot.val();
+        return Object.values(snapshot.val());
     });
 }
 
