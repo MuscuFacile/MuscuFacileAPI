@@ -5,7 +5,7 @@ services:
 
 env:
   global:
-    - NODE_ENV= production
+    - NODE_ENV=production
     - FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID
     - FIREBASE_PRIVATE_KEY_ID=$FIREBASE_PRIVATE_KEY_ID
     - FIREBASE_PRIVATE_KEY=$FIREBASE_PRIVATE_KEY
@@ -15,7 +15,13 @@ env:
 before_install:
   - npm install -g nodemon
   - docker build -t muscu-facile-api .
-  - docker run --name muscu-facile-api -v $(pwd):/var/www/muscu-facile-api -p 3000:3000 muscu-facile-api
+  - docker run --name muscu-facile-api -v $(pwd):/var/www/muscu-facile-api -p 3000:3000 \
+    -e FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID  \
+    -e FIREBASE_PRIVATE_KEY_ID=$FIREBASE_PRIVATE_KEY_ID  \
+    -e FIREBASE_PRIVATE_KEY=$FIREBASE_PRIVATE_KEY  \
+    -e FIREBASE_CLIENT_EMAIL=$FIREBASE_CLIENT_EMAIL  \
+    -e FIREBASE_CLIENT_ID=$FIREBASE_CLIENT_ID  \
+    muscu-facile-api
   - docker ps -a
 
 script: docker exec muscu-facile-api npm test
