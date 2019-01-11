@@ -11,7 +11,7 @@ exports.getFirebaseAdminDb = () => {
     serviceAccount.client_email = process.env.FIREBASE_CLIENT_EMAIL;
     serviceAccount.client_id = process.env.FIREBASE_CLIENT_ID;
 
-    console.log(typeof process.env.FIREBASE_PRIVATE_KEY);
+    console.log(process.env.FIREBASE_PRIVATE_KEY);
 
     const firebase = admin.initializeApp({ //  inititalisation de l'app firebase admin
         credential: admin.credential.cert(serviceAccount),
