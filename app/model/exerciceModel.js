@@ -5,12 +5,11 @@ const db = firebase.getFirebaseAdminDb();
 const uuidv1 = require('uuid/v1');
 
 exports.insertExercice = async (exercice) => {
-    const muscles = db.ref(`/exercices`);
+    const exercices = db.ref(`/exercices`);
     const dataToSave={};
     dataToSave[exercice.id]=
     {
         'name': exercice.name,
-        'status': exercice.status,
         'description':exercice.description,
         'category':exercice.category,
         'muscles':exercice.muscles,
@@ -18,5 +17,5 @@ exports.insertExercice = async (exercice) => {
         'equipment':exercice.equipment,  
         'images': exercice.images,  
     };
-    return muscles.update(dataToSave);  
+    return exercices.update(dataToSave);  
 }
