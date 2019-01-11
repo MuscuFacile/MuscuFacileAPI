@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "start-dev": "nodemon -l app.js"
+    "start-dev": "nodemon app.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
     "cookie-parser": "~1.4.3",
@@ -22,6 +23,7 @@
     "mocha": "^5.2.0",
     "morgan": "~1.9.0",
     "passport": "^0.4.0",
-    "passport-google-oauth": "^1.0.0"
+    "passport-google-oauth": "^1.0.0",
+    "uuid": "^3.3.2"
   }
 }

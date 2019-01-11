@@ -90,6 +90,7 @@ app.get('/logout', (req, res) => {
 require('./app/api/routes/userRoute')(app); //gestion des utilisateurs
 
 require('./app/api/user')(app);
+require('./app/api/imports')(app);
 
 
 app.get('*', (req, res) => {
