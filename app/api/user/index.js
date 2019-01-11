@@ -116,35 +116,36 @@ module.exports = app => {
         });
     });
 
-    app.get('/users/:email/calculImc', (req, res) => {
-        userModel.getUser(userController.sanitizeEmail(req.params.email)).then(userDetails => {
+    app.get('/users/:email/imc', async (req, res) => {
+        let email = userController.sanitizeEmail(req.params.email);
+        let userDetails = await userModel.getUser(email)
 
-            let imc,
-                statut;
+        let imc,
+            statut,
+            poids;
 
-            if (!userDetails) {
-                res.status(404).send({ error: 'Utilisateur inconnu' });
-            } else {
-                imc = userController.calculImc(userDetails.taille, userDetails.poids[userDetails.poids.length - 1]); //calcul de l'imc avec le poids le plus récent
+        if (!userDetails) {
+            res.status(404).send({ error: 'Utilisateur inconnu' });
+        } else {
+            poids = await userModel.getLastPoids(email);
+            imc = userController.calculImc(userDetails.taille, poids); //calcul de l'imc avec le poids le plus récent
+            statut = imc ? userController.statutImc(imc) : "IMC invalide";
 
-                statut = imc ? userController.statutImc(imc) : "IMC invalide";
-
-                res.status(200).json({
-                    "imc": imc,
-                    "statut": statut
-                });
-            }
-        });
+            res.status(200).json({
+                "imc": imc,
+                "statut": statut
+            });
+        }
     });
 
     app.post('/users/:email/poids', (req, res) => {
 
         console.log(req.params);
         userModel.addPoids(userController.sanitizeEmail(req.params.email), req.body.poids, req.body.date).then((poidsUser) => {
-            if(!poidsUser){
-                res.status(500).send({ error: 'Impossible d\'insérer'});
+            if (!poidsUser) {
+                res.status(500).send({ error: 'Impossible d\'insérer' });
             } else {
-                res.status(200).send({ success : 'Insertion réussie' });
+                res.status(200).send({ success: 'Insertion réussie' });
             }
         });
     });

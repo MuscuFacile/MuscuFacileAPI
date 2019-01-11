@@ -71,3 +71,11 @@ exports.getPoids = (email, poids) => {
         return snapshot.val();
     });
 }
+
+exports.getLastPoids = async (email) => {
+    let snapshot = await db.ref(`/users/${email}/poids`).orderByKey().limitToLast(1).once('value')
+    
+    let val = snapshot.val();
+    
+    return val[Object.keys(val)[0]].poids;
+}
