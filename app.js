@@ -89,6 +89,7 @@ app.get('/logout', (req, res) => {
 
 // Routes
 require('./app/api/user')(app); //gestion des utilisateurs
+require('./app/api/exercices')(app);
 require('./app/api/imports')(app);
 
 

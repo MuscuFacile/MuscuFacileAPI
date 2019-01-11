@@ -13,3 +13,10 @@ exports.insertCategory = async (category) => {
     };
     return categories.update(dataToSave);  
 }
+
+exports.getAllCategories = async () =>{
+    const categories = db.ref('/categories');
+    const snapshot = await categories.once('value');
+
+    return snapshot.val();
+}
