@@ -6,7 +6,7 @@ const userController = require('./userController');
 
 module.exports = app => {
 
-    app.post('/user/insert', (req, res) => { // route d'inscription
+    app.post('/users', (req, res) => { // route d'inscription
         const email = req.body.email;
 
         let passSalt = userController.cryptPassword(req.body.pass);
@@ -32,7 +32,7 @@ module.exports = app => {
         });
     });
 
-    app.post('/user/login', (req, res) => { // route de connexion
+    app.post('/users/login', (req, res) => { // route de connexion
 
         const email = req.body.email;
         const pass = req.body.pass;
@@ -55,7 +55,7 @@ module.exports = app => {
         });
     });
 
-    app.patch('/user/details/:email', (req, res) => { // route d'insertion des détails de l'utilisateur
+    app.patch('/users/:email', (req, res) => { // route d'insertion des détails de l'utilisateur
         const email = req.params.email;
         const reqBody = req.body;
 
@@ -104,7 +104,7 @@ module.exports = app => {
         });
     });
 
-    app.get('/user/details/:email', (req, res) => {
+    app.get('/users/:email', (req, res) => {
 
         userModel.getUser(userController.sanitizeEmail(req.params.email)).then(userDetails => {
 
@@ -116,7 +116,7 @@ module.exports = app => {
         });
     });
 
-    app.get('/user/calculImc/:email', (req, res) => {
+    app.get('/users/:email/calculImc', (req, res) => {
         userModel.getUser(userController.sanitizeEmail(req.params.email)).then(userDetails => {
 
             let imc,
@@ -137,4 +137,25 @@ module.exports = app => {
         });
     });
 
+    app.post('/users/:email/poids', (req, res) => {
+
+        console.log(req.params);
+        userModel.addPoids(userController.sanitizeEmail(req.params.email), req.body.poids, req.body.date).then((poidsUser) => {
+            if(!poidsUser){
+                res.status(500).send({ error: 'Impossible d\'insérer'});
+            } else {
+                res.status(200).send({ success : 'Insertion réussie' });
+            }
+        });
+    });
+
+    app.get('/users/:email/poids', (req, res) => {
+        userModel.getPoids(userController.sanitizeEmail(req.params.email)).then((poidsUser) => {
+            if (!poidsUser) {
+                res.status(404).send({ error: 'Poids introuvables' });
+            } else {
+                res.json(poidsUser);
+            }
+        });
+    });
 }

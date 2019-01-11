@@ -31,7 +31,6 @@ exports.sanitizeEmail = (email) => {
 }
 
 exports.insertDetails = (email, details) => {
-
     return userModel.insertDetails(email, details).then(inserted => { return inserted; })
 }
 
