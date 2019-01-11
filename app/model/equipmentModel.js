@@ -13,3 +13,9 @@ exports.insertEquipment = async (equipment) => {
     };
     return equipments.update(dataToSave);  
 }
+
+exports.getAllEquipment = async ()=>{
+    const categories = db.ref('/equipments');
+    const snapshot = await categories.once('value');
+    return snapshot.val();
+}
