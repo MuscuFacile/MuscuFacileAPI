@@ -16,7 +16,7 @@ before_install:
   - npm install -g nodemon
   - docker build -t muscu-facile-api .
   - echo $FIREBASE_PRIVATE_KEY
-  - docker run -e FIREBASE_PROJECT_ID=$(FIREBASE_PROJECT_ID) -e FIREBASE_PRIVATE_KEY_ID=$(FIREBASE_PRIVATE_KEY_ID) -e FIREBASE_PRIVATE_KEY=$(FIREBASE_PRIVATE_KEY) -e FIREBASE_CLIENT_EMAIL=$(FIREBASE_CLIENT_EMAIL) -e FIREBASE_CLIENT_ID=$(FIREBASE_CLIENT_ID) -v $(pwd):/var/www/muscu-facile-api -p 3000:3000 --name muscu-facile-api muscu-facile-api
+  - docker run -e FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID -e FIREBASE_PRIVATE_KEY_ID=$FIREBASE_PRIVATE_KEY_ID -e FIREBASE_PRIVATE_KEY=$FIREBASE_PRIVATE_KEY -e FIREBASE_CLIENT_EMAIL=$FIREBASE_CLIENT_EMAIL -e FIREBASE_CLIENT_ID=$FIREBASE_CLIENT_ID -v $(pwd):/var/www/muscu-facile-api -p 3000:3000 --name muscu-facile-api muscu-facile-api
   - docker ps -a
 
 script: docker exec muscu-facile-api npm test
