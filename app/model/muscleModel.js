@@ -10,3 +10,9 @@ exports.insertMuscle = async (muscle) => {
     dataToSave[muscle.id]={'name': muscle.name, 'is_front': muscle.is_front};
     return muscles.update(dataToSave);  
 }
+
+exports.getAllMuscles = async ()=>{
+    const muscles = db.ref('/muscles');
+    const snapshot = await muscles.once('value');
+    return snapshot.val();
+}

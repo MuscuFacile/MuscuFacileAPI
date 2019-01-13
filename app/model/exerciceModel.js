@@ -19,3 +19,9 @@ exports.insertExercice = async (exercice) => {
     };
     return exercices.update(dataToSave);  
 }
+
+exports.getAllExercices = async ()=>{
+    const exercices = db.ref('/exercices');
+    const snapshot = await exercices.once('value');
+    return snapshot.val();
+}
