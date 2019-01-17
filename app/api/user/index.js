@@ -20,13 +20,19 @@ module.exports = app => {
         userModel.insertUser(userController.sanitizeEmail(email), userData).then(insert => {
             switch (insert) {
                 case true:
-                    res.status(200).send({ success: 'Utilisateur enregistré avec succès' });
+                    res.status(200).send({
+                        success: 'Utilisateur enregistré avec succès'
+                    });
                     break;
                 case false:
-                    res.status(401).send({ error: 'Utilisateur déjà existant' });
+                    res.status(401).send({
+                        error: 'Utilisateur déjà existant'
+                    });
                     break;
                 default:
-                    res.status(500).send({ error: 'Quelque chose s\'est mal, passé, contactez le webmestre' });
+                    res.status(500).send({
+                        error: 'Quelque chose s\'est mal, passé, contactez le webmestre'
+                    });
                     break;
             }
         });
@@ -40,16 +46,27 @@ module.exports = app => {
         userController.verifyLogin(userController.sanitizeEmail(email), pass).then(isValid => {
             switch (isValid) {
                 case true:
-                    res.status(200).send({ success: 'Utilisateur identfié avec succès', token: jwt.sign({ 'email': email }, 'muscuAPI') });
+                    res.status(200).send({
+                        success: 'Utilisateur identfié avec succès',
+                        token: jwt.sign({
+                            'email': email
+                        }, 'muscuAPI')
+                    });
                     break;
                 case false:
-                    res.status(403).send({ error: 'identifiants erronnés' });
+                    res.status(403).send({
+                        error: 'identifiants erronnés'
+                    });
                     break;
                 case 'non-inscrit':
-                    res.status(401).send({ error: 'Utilisateur inconnu' });
+                    res.status(401).send({
+                        error: 'Utilisateur inconnu'
+                    });
                     break;
                 default:
-                    res.status(500).send({ error: 'Quelque chose s\'est mal, passé, contactez le webmestre' });
+                    res.status(500).send({
+                        error: 'Quelque chose s\'est mal, passé, contactez le webmestre'
+                    });
                     break;
             }
         });
@@ -92,13 +109,19 @@ module.exports = app => {
         userController.insertDetails(userController.sanitizeEmail(email), details).then(inserted => {
             switch (inserted) {
                 case true:
-                    res.status(200).send({ success: 'Utilisateur mis-à-jour' });
+                    res.status(200).send({
+                        success: 'Utilisateur mis-à-jour'
+                    });
                     break;
                 case false:
-                    res.status(500).send({ error: 'Insertion impossible pour le moment' });
+                    res.status(500).send({
+                        error: 'Insertion impossible pour le moment'
+                    });
                     break;
                 default:
-                    res.status(500).send({ error: 'Quelque chose s\'est mal, passé, contactez le webmestre' });
+                    res.status(500).send({
+                        error: 'Quelque chose s\'est mal, passé, contactez le webmestre'
+                    });
                     break;
             }
         });
@@ -109,7 +132,9 @@ module.exports = app => {
         userModel.getUser(userController.sanitizeEmail(req.params.email)).then(userDetails => {
 
             if (!userDetails) {
-                res.status(404).send({ error: 'Utilisateur inconnu' });
+                res.status(404).send({
+                    error: 'Utilisateur inconnu'
+                });
             } else {
                 userDetails.poids = Object.values(userDetails.poids);
                 res.status(200).json(userDetails);
@@ -126,7 +151,9 @@ module.exports = app => {
             poids;
 
         if (!userDetails) {
-            res.status(404).send({ error: 'Utilisateur inconnu' });
+            res.status(404).send({
+                error: 'Utilisateur inconnu'
+            });
         } else {
             poids = await userModel.getLastPoids(email);
             imc = userController.calculImc(userDetails.taille, poids); //calcul de l'imc avec le poids le plus récent
@@ -141,12 +168,15 @@ module.exports = app => {
 
     app.post('/users/:email/poids', (req, res) => {
 
-        console.log(req.params);
         userModel.addPoids(userController.sanitizeEmail(req.params.email), req.body.poids, req.body.date).then((poidsUser) => {
             if (!poidsUser) {
-                res.status(500).send({ error: 'Impossible d\'insérer' });
+                res.status(500).send({
+                    error: 'Impossible d\'insérer'
+                });
             } else {
-                res.status(200).send({ success: 'Insertion réussie' });
+                res.status(200).send({
+                    success: 'Insertion réussie'
+                });
             }
         });
     });
@@ -154,10 +184,22 @@ module.exports = app => {
     app.get('/users/:email/poids', (req, res) => {
         userModel.getPoids(userController.sanitizeEmail(req.params.email)).then((poidsUser) => {
             if (!poidsUser) {
-                res.status(404).send({ error: 'Poids introuvables' });
+                res.status(404).send({
+                    error: 'Poids introuvables'
+                });
             } else {
                 res.json(poidsUser);
             }
+        });
+    });
+
+    app.delete('/users/:email/poids/:timestamp', async (req, res) => {
+        let timestamp = req.params.timestamp;
+        let email = userController.sanitizeEmail(req.params.email);
+
+        let response = await userModel.deletePoids(email, timestamp);
+        res.status(200).send({
+            success: 'Suppression réussie'
         });
     });
 }

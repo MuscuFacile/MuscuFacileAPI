@@ -59,7 +59,7 @@ exports.insertDetails = (email, details) => {
  * @param {*} details {timestamp, value}
  */
 exports.addPoids = (email, poids, date) => {
-    return db.ref(`/users/${email}/poids`).push({'poids' : poids, 'date' : date}).then(() => {
+    return db.ref(`/users/${email}/poids/${date}`).update({'poids' : poids, 'date' : date}).then(() => {
         return true;
     }).catch(() => {
         return false;
@@ -78,4 +78,8 @@ exports.getLastPoids = async (email) => {
     let val = snapshot.val();
     
     return val[Object.keys(val)[0]].poids;
+}
+
+exports.deletePoids = async (email, timestamp) => {
+    await db.ref(`/users/${email}/poids/${timestamp}`).remove();
 }
