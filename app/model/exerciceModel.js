@@ -25,3 +25,9 @@ exports.getAllExercices = async ()=>{
     const snapshot = await exercices.once('value');
     return snapshot.val();
 }
+
+exports.getExercice = async (id) => {
+    let snapshot = await db.ref(`/exercices/${id}`).once('value');
+
+    return snapshot.val();
+}

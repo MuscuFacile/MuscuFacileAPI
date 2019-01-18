@@ -62,7 +62,16 @@ module.exports = app => {
             res.status(data.status).send(data.data);
         }
        
-    })
+    });
 
+    app.get('/exercices/:id', async (req, res) => {
+        let exercice = await exerciceController.getExercice(req.params.id);
+
+        if(!exercice){
+            res.status(500).send({ error : "Erreur interne en cherchant l'exercice"});
+        } else {
+            res.status(200).send(exercice);
+        }
+    });
 
 }

@@ -53,3 +53,7 @@ exports.getExercices = async (filter) => {
 
     return { status: 200, data: exercices };
 }
+
+exports.getExercice = async (id) => {
+    return await exerciceModel.getExercice(id);
+}
