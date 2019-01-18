@@ -20,3 +20,9 @@ exports.getAllCategories = async () =>{
 
     return snapshot.val();
 }
+
+exports.getCategorie = async (id) => {
+    let snapshot = await db.ref(`/categories/${id}`).once('value');
+
+    return snapshot.val();
+}

@@ -10,3 +10,7 @@ exports.getCategories = async () =>{
     })
     return {status: 200, data: categories};
 }
+
+exports.getCategorie = async (id) => {
+    return await categoryModel.getCategorie(id);
+}
