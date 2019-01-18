@@ -3,7 +3,7 @@
 const userModel = require('../../model/userModel');
 const jwt = require('jsonwebtoken');
 const userController = require('./userController');
-
+const sanitizeEmail =require('../../service/sanitizeEmail')
 module.exports = app => {
 
     app.post('/users', (req, res) => { // route d'inscription
@@ -17,7 +17,7 @@ module.exports = app => {
             salt: passSalt.salt
         }
 
-        userModel.insertUser(userController.sanitizeEmail(email), userData).then(insert => {
+        userModel.insertUser(sanitizeEmail(email), userData).then(insert => {
             switch (insert) {
                 case true:
                     res.status(200).send({
@@ -43,7 +43,7 @@ module.exports = app => {
         const email = req.body.email;
         const pass = req.body.pass;
 
-        userController.verifyLogin(userController.sanitizeEmail(email), pass).then(isValid => {
+        userController.verifyLogin(sanitizeEmail(email), pass).then(isValid => {
             switch (isValid) {
                 case true:
                     res.status(200).send({
@@ -106,7 +106,7 @@ module.exports = app => {
             details['genre'] = reqBody['genre'];
         }
 
-        userController.insertDetails(userController.sanitizeEmail(email), details).then(inserted => {
+        userController.insertDetails(sanitizeEmail(email), details).then(inserted => {
             switch (inserted) {
                 case true:
                     res.status(200).send({
@@ -129,7 +129,7 @@ module.exports = app => {
 
     app.get('/users/:email', (req, res) => {
 
-        userModel.getUser(userController.sanitizeEmail(req.params.email)).then(userDetails => {
+        userModel.getUser(sanitizeEmail(req.params.email)).then(userDetails => {
 
             if (!userDetails) {
                 res.status(404).send({
@@ -143,7 +143,7 @@ module.exports = app => {
     });
 
     app.get('/users/:email/imc', async (req, res) => {
-        let email = userController.sanitizeEmail(req.params.email);
+        let email = sanitizeEmail(req.params.email);
         let userDetails = await userModel.getUser(email)
 
         let imc,
@@ -168,7 +168,7 @@ module.exports = app => {
 
     app.post('/users/:email/poids', (req, res) => {
 
-        userModel.addPoids(userController.sanitizeEmail(req.params.email), req.body.poids, req.body.date).then((poidsUser) => {
+        userModel.addPoids(sanitizeEmail(req.params.email), req.body.poids, req.body.date).then((poidsUser) => {
             if (!poidsUser) {
                 res.status(500).send({
                     error: 'Impossible d\'insérer'
@@ -182,7 +182,7 @@ module.exports = app => {
     });
 
     app.get('/users/:email/poids', (req, res) => {
-        userModel.getPoids(userController.sanitizeEmail(req.params.email)).then((poidsUser) => {
+        userModel.getPoids(sanitizeEmail(req.params.email)).then((poidsUser) => {
             if (!poidsUser) {
                 res.status(404).send({
                     error: 'Poids introuvables'
@@ -195,7 +195,7 @@ module.exports = app => {
 
     app.delete('/users/:email/poids/:timestamp', async (req, res) => {
         let timestamp = req.params.timestamp;
-        let email = userController.sanitizeEmail(req.params.email);
+        let email = sanitizeEmail(req.params.email);
 
         let response = await userModel.deletePoids(email, timestamp);
         res.status(200).send({

@@ -26,9 +26,6 @@ exports.verifyLogin = (email, pass) => {
     });
 }
 
-exports.sanitizeEmail = (email) => {
-    return email.replace(/\./g, '_');
-}
 
 exports.insertDetails = (email, details) => {
     return userModel.insertDetails(email, details).then(inserted => { return inserted; })
