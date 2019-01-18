@@ -91,6 +91,7 @@ app.get('/logout', (req, res) => {
 require('./app/api/user')(app); //gestion des utilisateurs
 require('./app/api/exercices')(app);
 require('./app/api/imports')(app);
+require('./app/api/sessions')(app);
 
 
 app.get('*', (req, res) => {
