@@ -52,3 +52,34 @@ exports.insertDetails = (email, details) => {
         return false; 
     });
 }
+
+/**
+ * 
+ * @param {*} email 
+ * @param {*} details {timestamp, value}
+ */
+exports.addPoids = (email, poids, date) => {
+    return db.ref(`/users/${email}/poids/${date}`).update({'poids' : poids, 'date' : date}).then(() => {
+        return true;
+    }).catch(() => {
+        return false;
+    });
+}
+
+exports.getPoids = (email, poids) => {
+    return db.ref(`/users/${email}/poids`).once('value').then((snapshot) => {
+        return Object.values(snapshot.val());
+    });
+}
+
+exports.getLastPoids = async (email) => {
+    let snapshot = await db.ref(`/users/${email}/poids`).orderByKey().limitToLast(1).once('value')
+    
+    let val = snapshot.val();
+    
+    return val[Object.keys(val)[0]].poids;
+}
+
+exports.deletePoids = async (email, timestamp) => {
+    await db.ref(`/users/${email}/poids/${timestamp}`).remove();
+}

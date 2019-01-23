@@ -1,6 +1,6 @@
 {
     "users":[{
-        "id":"uuid",
+        "email":"string",
         "name":"String",
         "lastName":"String",
         "dateOfBirth":"date",
@@ -24,7 +24,7 @@
                 "exercises":[{
                     "id":"int",
                     "value":"float or time",
-                    "numberOfRepetion":"",
+                    "numberOfRepetion":"int",
                     "objectif":"String"
                 }]
             }
