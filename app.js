@@ -1,3 +1,4 @@
+//const dotenv = require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -59,7 +60,7 @@ app.get('/', function(req, res, next) {
       status: 'session cookie not set'
     });
   }
-//   res.send({ 
+//   res.send({
 //     "title": 'fdgf'
 //  });
 });
@@ -101,7 +102,7 @@ app.get('*', (req, res) => {
 
 
 // Create HTTP server.
- 
+
 /**
  * Get port from environment and store in Express.
  */

@@ -1,6 +1,5 @@
 
 #masquage des credentials du repo public
-credentials/firebase.json
 credentials/google.json
 
 # Created by https://www.gitignore.io/api/node,visualstudiocode
