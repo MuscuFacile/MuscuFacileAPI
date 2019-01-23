@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "start-dev": "nodemon -l app.js",
-    "tests": "node console.log('tests')"
+    "tests": "node -v"
   },
   "dependencies": {
     "axios": "^0.18.0",
