@@ -3,6 +3,7 @@ const equipmentsController = require('./equipmentController');
 const musclesController = require('./musclesController');
 const exerciceController = require('./exerciceController')
 const checkNumber= require('../../service/checkNumber');
+
 module.exports = app => {
     
     app.get('/categories', async (req, res) => {
@@ -10,6 +11,19 @@ module.exports = app => {
         console.log(data);
 
         res.status(data.status).send(data.data);
+    });
+    
+    app.get('/categories/:id', async (req, res) => {
+
+        let categorie = await categoriesController.getCategorie(req.params.id);
+
+        if (!categorie) {
+            res.status(500).send({
+                error: "Erreur interne en cherchant la catégorie"
+            });
+        } else {
+            res.status(200).send(categorie);
+        }
     });
 
     app.get('/equipments', async (req, res) => {
