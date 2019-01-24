@@ -8,15 +8,21 @@ module.exports = app => {
 
     app.post('/users', (req, res) => { // route d'inscription
         const email = req.body.email;
-
         let passSalt = userController.cryptPassword(req.body.pass);
 
         let userData = {
             email: email,
             password: passSalt.pass,
-            salt: passSalt.salt
-        }
-
+            salt: passSalt.salt,
+            prenom: req.body.prenom,
+            nom: req.body.nom, 
+            taille:req.body.taille,  
+            age: req.body.age,
+        };
+        userData.poids=[{
+            poids:req.body.poids,
+            date:req.body.date
+        }];
         userModel.insertUser(sanitizeEmail(email), userData).then(insert => {
             switch (insert) {
                 case true:
