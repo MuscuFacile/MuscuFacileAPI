@@ -1,0 +1,20 @@
+version: '2.3'
+
+services:
+
+  node:
+    build:
+      context: .
+    # you can use legacy debug config or new inspect
+    # NOTE: if nodemon isn't restarting on changes, you might be on Windows
+    # which has trouble seeing file changes, so add -L to use legacy polling
+    # https://github.com/remy/nodemon#application-isnt-restarting
+    #command: ../node_modules/.bin/nodemon --debug=0.0.0.0:5858
+    command: npm run start-dev
+    ports:
+      - "3000:80"
+    volumes:
+      - .:/var/www/muscu-facile-api
+    environment:
+      - NODE_ENV=development
+      - PORT=80
