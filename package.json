@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "start-dev": "nodemon -l app.js",
-    "tests": "node -v"
+    "start-dev": "nodemon app.js",
+    "test": " mocha --recursive --exit"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-beta.3",
     "cors": "^2.8.5",

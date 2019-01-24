@@ -1,4 +1,4 @@
-//const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -92,7 +92,6 @@ app.get('/logout', (req, res) => {
 require('./app/api/user')(app); //gestion des utilisateurs
 require('./app/api/exercices')(app);
 require('./app/api/imports')(app);
-require('./app/api/categories')(app);
 require('./app/api/sessions')(app);
 
 
@@ -119,4 +118,4 @@ const server = http.createServer(app);
  */
 server.listen(port, () => console.log(`API running on localhost:${port}`));
 
-module.exports = app;
+module.exports = server; //for testing 
