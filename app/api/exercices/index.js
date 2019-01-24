@@ -3,6 +3,7 @@ const equipmentsController = require('./equipmentController');
 const musclesController = require('./musclesController');
 const exerciceController = require('./exerciceController')
 const checkNumber= require('../../service/checkNumber');
+
 module.exports = app => {
     
     app.get('/categories', async (req, res) => {
